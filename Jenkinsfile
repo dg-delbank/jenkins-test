@@ -5,7 +5,10 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'node --version'
+                script {
+                    sh 'docker build -t krakend-inss .'
+                    echo 'Docker build finished'
+                }
             }
         }
     }
