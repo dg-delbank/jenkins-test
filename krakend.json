@@ -1,0 +1,68 @@
+{
+    "$schema": "https://www.krakend.io/schema/krakend.json",
+    "version": 3,
+    "name": "KrakenD INSS Homologação",
+    "extra_config": {
+      "qos/ratelimit/service": {
+        "max_rate": 10000,
+        "capacity": 5000,
+        "client_max_rate": 1000,
+        "client_capacity": 5000
+      },
+      "security/cors": {
+        "allow_origins": [
+          "*"
+        ],
+        "expose_headers": [
+          "Content-Length"
+        ],
+        "max_age": "12h",
+        "allow_methods": [
+          "GET",
+          "POST",
+          "PUT"
+        ],
+        "allow_credentials": true
+      },
+      "security/bot-detector": {
+        "empty_user_agent_is_bot": true,
+        "cache_size": 10000
+      }
+    },
+    "timeout": "1000ms",
+    "port": 8080,
+    "cache_ttl": "500s",
+    "output_encoding": "json",
+    "debug_endpoint": true,
+    "read_timeout": "15s",
+    "write_timeout": "15s",
+    "endpoints": [
+      {
+        "endpoint": "/test",
+        "method": "GET",
+        "output_encoding": "json",
+        "backend": [
+          {
+            "url_pattern": "/",
+            "encoding": "json",
+            "sd": "static",
+            "method": "GET",
+            "disable_host_sanitize": false,
+            "host": [
+              "localhost:3000"
+            ]
+          }
+        ],
+        "extra_config": {
+          "proxy": {
+            "static": {
+              "data": {
+                "Kraken response obj1": "KrakenD error log"
+              },
+              "strategy": "errored"
+            }
+          }
+        }
+      }
+    ]
+  }
